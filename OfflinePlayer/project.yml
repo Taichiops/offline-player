@@ -1,0 +1,53 @@
+name: OfflinePlayer
+options:
+  bundleIdPrefix: com.taichisudoh
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_TEAM: ""                # filled in during Phase 5 (keep it out of public repos)
+    CODE_SIGN_STYLE: Automatic
+targets:
+  OfflinePlayer:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "1,2"
+        PRODUCT_BUNDLE_IDENTIFIER: com.taichisudoh.offlineplayer
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+    info:
+      path: Sources/Info.plist
+      properties:
+        CFBundleDisplayName: Offline Player
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UIBackgroundModes: [audio]                 # REQUIRED for lock-screen playback
+        UIFileSharingEnabled: true                 # Documents visible in Finder when the iPad is plugged into a Mac
+        LSSupportsOpeningDocumentsInPlace: true    # Documents visible in the Files app
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+    scheme:
+      testTargets:
+        - OfflinePlayerTests
+  OfflinePlayerTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests]
+    dependencies:
+      - target: OfflinePlayer
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.taichisudoh.offlineplayer.tests
